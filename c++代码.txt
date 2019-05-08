@@ -1,0 +1,783 @@
+//实验一
+#include <iostream>
+using namespace std;
+int error = 0;
+int ListLen = 0 ;
+int SeqList [101];
+void InsertSeqList (int NewItem , int i)
+{
+    int j;
+    if((i > ListLen+1) || (i < 1) || (ListLen == 100))
+    {
+    error=1;
+    cout <<"插入出错啦";
+    }
+    else
+    {
+        for(j = ListLen ; j >= i ; j --)
+        {
+            SeqList [j+1] = SeqList [j] ;
+        }
+        SeqList [i]=NewItem;
+        ListLen++;
+    }
+}
+void ShowSeqList ()
+{
+    int i;
+    cout << "The list : " ;
+    for (i = 1 ; i <= ListLen ; i ++ )
+    {
+          cout <<SeqList[i]<<'\0' ;
+    }
+    cout << endl ;
+
+}
+int main()
+{
+    int i,a,b;
+    cout << "请输入表长 " ;
+    cin >> ListLen ;
+    for (i = 1 ; i <= ListLen ; i++)
+    {
+           cout << "请输入第" << i <<"个元素的值" ;
+           cin >> SeqList[i] ;
+    }
+    cout<<"请输入插入的位置：";
+    cin>>a;
+    cout<<"请输入插入的元素：";
+    cin>>b;
+    InsertSeqList(b,a);
+    if(error=0)
+    ShowSeqList();
+    return 0;
+}
+单项链//
+#include <iostream>
+#include <malloc.h>
+using namespace std;
+int error=0;
+typedef struct LNode
+{
+    int date;
+    struct LNode *next;
+}LNode,*link;
+LNode *head;
+void LinkList()
+{
+    head=(link)malloc(sizeof(LNode));
+    head->date=0;
+    head->next=NULL;
+
+}
+void CreateLinkList(int n)
+{
+    LNode *pnew,*ptemp;
+    ptemp=head;
+    for(int i=1;i<=n;i++)
+    {
+        pnew=(link)malloc(sizeof(LNode));
+        cout<<"请输入第"<<i<<"个值";
+        cin>>pnew->date;
+        pnew->next=NULL;
+        ptemp->next=pnew;
+        ptemp=pnew;
+    }
+}
+void DeleteLNode(int n,int a)
+{
+            LNode *pnew,*ptemp;
+            ptemp=(link)malloc(sizeof(LNode));
+            pnew=(link)malloc(sizeof(LNode));
+            int b=1;
+            pnew=head->next;
+            while(pnew->date!=a)
+            {
+                ptemp=pnew;
+                pnew=pnew->next;
+                b++;
+                if(b==n+1)
+                {
+                    error=1;
+                    break;
+                }
+
+            }
+            if(b==n+1)
+            {
+                cout<<"没找到该元素"<<endl;
+            }
+            else
+            {
+                if(pnew==head->next)
+                head->next=pnew->next;
+                else
+                {
+                    if(b==n)
+                    {
+                        ptemp->next=NULL;
+                    }
+                    else
+                    {
+                        ptemp->next=pnew->next;
+                    }
+                }
+            }
+}
+void fz(int n)
+{
+    LNode *p1,*p2,*p3;
+    int b=1;
+    p1=(link)malloc(sizeof(LNode));
+    p2=new LNode;
+    p3=new LNode;
+    p2=head->next;
+    p3=p2->next;
+    p2->next=NULL;
+    for(b;b<n-1;b++)
+    {
+       p1=p3->next;
+       p3->next=p2;
+       p2=p3;
+       p3=p1;
+    }
+    p3->next=p2;
+    head->next=p3;
+}
+void Showlist(int n)
+{
+    LNode *pnew;
+    int b=1;
+    pnew=head->next;
+    for(b=1;b<=n;b++)
+    {
+        cout<<pnew->date<<'\0';
+        pnew=pnew->next;
+    }
+}
+int main()
+{
+    int k,n;
+    cout<<"请输入链长度：";
+    cin>>n;
+    LinkList();
+    CreateLinkList(n);
+    Showlist(n);
+    cout<<endl<<"请输入要删除的元素";
+    cin>>k;
+    DeleteLNode(n,k);
+    if(error==0)
+    {
+        n=n-1;
+        fz(n);
+        cout<<"反转后为：";
+        Showlist(n);
+    }
+    else{fz(n);
+    cout<<"反转后为：";
+    Showlist(n);
+    }
+    return 0;
+}
+//实验二
+顺序栈//
+#include <iostream>
+#include <malloc.h>
+using namespace std;
+typedef struct SqStack
+{
+    int *base;
+    int *top;
+    int stacksize;
+}SqStack;
+SqStack *p;
+void InitStack()
+{
+   p=new SqStack;
+   p->base=new int(100);
+   if(!p->base);
+   else
+   {p->top=p->base;
+   p->stacksize=100;}
+}/*初始化顺序栈函数*/
+void Push(int x)
+{
+   if(p->top-p->base==p->stacksize);
+   else{
+   *p->top++=x;}
+}/*入栈函数*/
+void Pop()
+{
+    if(p->base==p->top);
+    else{
+    --p->top;}
+} /*出栈函数*/
+int GetTop()
+{
+    if(p->top!=p->base)
+    return *(p->top-1);
+}/*获取栈顶元素函数*/
+int main()/*主函数*/
+{
+    int y,a,b;
+InitStack();
+do{
+cout<<"请选择操作(1--4):"<<endl;
+cout<<"1 初始化顺序栈 2 插入一个元素 3 删除栈顶元素 4 取栈顶元素"<<endl;
+cin>>y;
+switch(y)
+{case 1:
+{InitStack();
+}break;
+case 2:
+{cout<<"请输入入栈数据：";
+cin>>a;
+Push(a);
+}break;
+case 3:
+{
+Pop();
+}break;
+case 4:
+{b=GetTop();
+cout<<"栈顶元素为："<<b<<endl;
+ }break;}
+}while (y<=4);
+return 0;
+}
+12341
+#include <iostream>
+#include <malloc.h>
+using namespace std;
+#define MAXNUM 100
+typedef struct sqqueue
+{
+    int *base;
+    int front;
+    int rear;
+}sqqueue;
+
+void initQueue(sqqueue *q)
+{
+    q=new sqqueue;
+    q->base==new int[MAXNUM];
+    if(!q->base) cout<<"出错！"<<endl;
+    else
+    {
+        q->front=q->rear=0;
+    }
+}/*队列初始化函数*/
+void append(sqqueue *q, int x)
+{
+    if((q->rear+1)%MAXNUM==q->front)
+    cout<<"出错！"<<endl;
+    else
+    {
+        q->base[q->rear]=x;
+        q->rear=(q->rear+1)%MAXNUM;
+    }
+}/*入队函数*/
+void Delete(sqqueue *q)
+{
+    if(q->front==q->rear)
+    cout<<"出错！"<<endl;
+    else
+    {
+        q->front=(q->front)%MAXNUM;
+    }
+
+}/*出队函数*/
+int gethead(sqqueue *q)
+{
+
+    if(q->front==q->rear)
+    cout<<"出错！"<<endl;
+    else
+    {
+        return q->base[q->front];
+    }
+}/*取队头元素函数*/
+
+int main()
+{
+    int y,a,b;
+    sqqueue *p;
+    initQueue(p);
+    do{
+cout<<"请选择操作(1--4):"<<endl;
+cout<<"1 初始化 2 入队 3 出队 4 取队头元素"<<endl;
+cin>>y;
+switch(y)
+{case 1:
+{initQueue(p);
+}break;
+case 2:
+{cout<<"请输入入队数据：";
+cin>>a;
+append(p,a);
+}break;
+case 3:
+{
+delete(p);
+}break;
+case 4:
+{b=gethead(p);
+cout<<"头元素为："<<b<<endl;
+ }break;}
+}while (y<=4);
+return 0;
+}
+队列//
+#include <iostream>
+#include <malloc.h>
+using namespace std;
+#define MAXNUM 100
+typedef struct sqqueue
+{
+    int *base;
+    int front;
+    int rear;
+}sqqueue;
+sqqueue *q;
+void initQueue()
+{
+    q=new sqqueue;
+    q->base=new int[MAXNUM];
+    if(!q->base) cout<<"出错！"<<endl;
+    else
+    {
+        q->front=q->rear=0;
+    }
+}/*队列初始化函数*/
+void append(int x)
+{
+    if((q->rear+1)%MAXNUM==q->front)
+    cout<<"出错！"<<endl;
+    else
+    {
+        q->base[q->rear]=x;
+        q->rear=(q->rear+1)%MAXNUM;
+    }
+}/*入队函数*/
+void Delete()
+{
+    if(q->front==q->rear)
+    cout<<"出错！"<<endl;
+    else
+    {
+        q->front=(q->front+1)%MAXNUM;
+    }
+
+}/*出队函数*/
+int gethead()
+{
+
+    if(q->front==q->rear)
+    cout<<"出错！"<<endl;
+    else
+    {
+        return q->base[q->front];
+    }
+}/*取队头元素函数*/
+
+int main()
+{
+    int y,a,b;
+    initQueue();
+    do{
+cout<<"请选择操作(1--4):"<<endl;
+cout<<"1 初始化 2 入队 3 出队 4 取队头元素"<<endl;
+cin>>y;
+switch(y)
+{case 1:
+{initQueue();
+}break;
+case 2:
+{cout<<"请输入入队数据：";
+cin>>a;
+append(a);
+}break;
+case 3:
+{
+Delete();
+}break;
+case 4:
+{b=gethead();
+cout<<"头元素为："<<b<<endl;
+ }break;}
+}while (y<=4);
+return 0;
+}
+//
+#include <iostream>
+#include <malloc.h>
+using namespace std;
+#define MAXNUM 100
+typedef struct sqqueue
+{
+    int *base;
+    int front;
+    int rear;
+}sqqueue;
+void initQueue(sqqueue *q)
+{
+    q->base=new int[MAXNUM];
+    if(!q->base) cout<<"出错！"<<endl;
+    else
+    {
+        q->front=q->rear=0;
+    }
+}/*队列初始化函数*/
+void append(sqqueue *q,int x)
+{
+    if((q->rear+1)%MAXNUM==q->front)
+    cout<<"出错！"<<endl;
+    else
+    {
+        q->base[q->rear]=x;
+        q->rear=(q->rear+1)%MAXNUM;
+    }
+}/*入队函数*/
+void Delete(sqqueue *q)
+{
+    if(q->front==q->rear)
+    cout<<"出错！"<<endl;
+    else
+    {
+        q->front=(q->front+1)%MAXNUM;
+    }
+
+}/*出队函数*/
+int gethead(sqqueue *q)
+{
+
+    if(q->front==q->rear)
+    cout<<"出错！"<<endl;
+    else
+    {
+        return q->base[q->front];
+    }
+}/*取队头元素函数*/
+
+int main()
+{
+    sqqueue *q;
+    q=new sqqueue;
+    int y,a,b;
+    initQueue(q);
+    do{
+cout<<"请选择操作(1--4):"<<endl;
+cout<<"1 初始化 2 入队 3 出队 4 取队头元素"<<endl;
+cin>>y;
+switch(y)
+{case 1:
+{initQueue(q);
+}break;
+case 2:
+{cout<<"请输入入队数据：";
+cin>>a;
+append(q,a);
+}break;
+case 3:
+{
+Delete(q);
+}break;
+case 4:
+{b=gethead(q);
+cout<<"头元素为："<<b<<endl;
+ }break;}
+}while (y<=4);
+return 0;
+}
+//实验三-二叉树
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include <iostream>
+using namespace std;
+struct node
+{
+int data;
+struct node *right, *left;
+}*root,*p,*q; /*定义二叉树的类型*/
+struct node *make(int y) /*构造头节点*/
+{
+struct node *newnode;
+newnode=(struct node *)malloc(sizeof(struct node));
+newnode->data=y;
+newnode->right=newnode->left=NULL;
+return(newnode);
+}
+void left(struct node *r,int x) /*构造左孩子*/
+{
+    node *a;
+    a=(struct node *)malloc(sizeof(struct node));
+    r->left=a;
+    a->data=x;
+    a->right=a->left=NULL;
+}
+void right(struct node *r,int x) /*构造右孩子*/
+{
+    node *a;
+    a=(struct node *)malloc(sizeof(struct node));
+    r->right=a;
+    a->data=x;
+    a->right=a->left=NULL;
+ }
+void inorder(struct node *r) /*中序遍历算法*/
+{
+    if(r)
+    {
+        inorder(r->left);
+        cout<<r->data<<'\0';
+        inorder(r->right);
+    }
+ }
+void preorder(struct node *r) /*先序遍历算法*/
+{
+    if(r)
+    {
+        cout<<r->data<<'\0';
+        preorder(r->left);
+        preorder(r->right);
+    }
+}
+void postorder(struct node *r) /*后序遍历算法*/
+{
+    if(r)
+    {
+        postorder(r->left);
+        postorder(r->right);
+        cout<<r->data<<'\0';
+    }
+}
+int main() /*main 主函数*/
+{
+int no,choice;
+printf("\n Enter the root:");
+scanf("%d",& no);
+root=make(no);
+p=root;
+while(1)
+{
+printf("\n Enter another number:");
+scanf("%d",& no);
+if(no==-1)
+break;
+p=root;
+q=root;
+while(no!=p->data && q!=NULL)
+{
+p=q;
+if(no<p->data)
+q=p->left;
+else
+q=p->right;
+}
+if(no<p->data)
+{
+printf("\n Left branch of %d is %d",p->data,no);
+left(p,no);
+}
+else
+{
+right(p,no);
+printf("\n Right Branch of %d is %d",p->data,no);
+}
+}
+while(1)
+{
+printf("\n 1.Inorder Traversal \n 2.Preorder Traversal \n 3.Postorder Traversal \n 4.Exit");
+printf("\n Enter choice:");
+scanf("%d",&choice);
+switch(choice)
+{
+case 1 :inorder(root);
+break;
+case 2 :preorder(root);
+break;
+case 3 :postorder(root);
+break;
+case 4 :exit(0);
+default:printf("Error ! Invalid Choice ");
+break;
+}
+getch();
+}
+}
+哈夫曼树、、、
+#include <stdio.h>
+#include<stdlib.h>
+#include <stdlib.h>
+#include <string.h>
+#include <string>
+#define MAX 32767
+#include <iostream>
+using namespace std;
+char s[128],g[128],letter;
+int s1,s2,m,h=0,count[26],r,n,x=0,u=0;
+char f[128],e[128];
+typedef struct
+{
+unsigned int weight ; /* 用来存放各个结点的权值*/
+int parent,lchild,rchild ; /*指向双亲、孩子结点的指针*/
+}HTNode, * HuffmanTree; /*动态分配数组，存储哈夫曼树*/
+typedef char **HuffmanCode;
+void select(HuffmanTree &ht,int n)
+{
+    int b;
+    for(int i=1;i<n;i++)
+    {
+        if(ht[i].parent==0)
+        {s1=i;
+        b=i+1;
+        for(b;i<n;b++)
+        {
+            if(ht[b].parent==0)
+            {s2=b;
+            if(ht[s1].weight>ht[s2].weight)
+            {s2=s1;s1=b;
+            }
+            break;
+            }
+        }
+        break;
+        }
+    }
+    for(int c=b+1;c<n;c++)
+    {
+        if(ht[c].parent==0)
+        {
+            if(ht[c].weight<ht[s2].weight)
+            {
+                s2=c;
+                if(ht[s1].weight>ht[s2].weight)
+                {
+                     s2=s1;s1=c;
+                }
+            }
+        }
+    }
+}/*ht,为树所在数组的头指针,n 为允许查找的最大序号,s1,s2,返回最小的两
+个序号*/
+void CrtHuffmanTree(HuffmanTree &ht,int n)
+{
+    int q=1;
+    if(n<=1) return;
+    m=2*n-1;
+    ht=new HTNode[m+1];
+    for(int k=1;k<=m;++k)
+    {
+        ht[k].parent=0;ht[k].lchild=0;ht[k].rchild=0;
+    }
+    for(int i=0;i<26;i++)
+    {
+        if(count[i]!=0)
+        {ht[q].weight=count[i];
+        q++;}
+    }
+    for(int i=n+1;i<=m;++i)
+    {select(ht,i);
+    ht[s1].parent=i;ht[s2].parent=i;
+    ht[i].lchild=s1;ht[i].rchild=s2;
+    ht[i].weight=ht[s1].weight+ht[s2].weight;}
+
+}/*建立哈夫曼树*/
+void CrtHuffmanCode(HuffmanTree &ht, HuffmanCode &hc, int n)
+/*求每个叶子结点对应的哈夫曼编码*/
+{
+    char *cd;
+    hc=new char*[n+1];
+    cd=new char[n];
+    cd[n-1]='\0';
+    for(int i=1;i<=n;i++)
+    {
+        int start=n-1;
+        int c=i;int f=ht[i].parent;
+        while(f!=0)
+        {
+            --start;
+            if(ht[f].lchild==c) cd[start]='0';
+            else cd[start]='1';
+            c=f;f=ht[f].parent;
+        }
+        hc[i]=new char[n-start];
+        strcpy(hc[i],&cd[start]);
+    }
+    delete cd;
+}
+void outputHuffman(HuffmanTree &ht, int m)
+{
+    cout<<"节点i weight parent lchild rchild"<<endl;
+    for(int i=1;i<=m;i++)
+    cout<<i<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<ht[i].weight<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<ht[i].parent<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<ht[i].lchild<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<ht[i].rchild<<endl;
+}
+void outputhuffCode(HuffmanCode &hc,int n)
+{
+    cout<<"字符--->编码"<<endl;
+    for(int i=1;i<=n;i++)
+    {
+        cout<<g[i]<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<'\0'<<hc[i]<<endl;
+    }
+
+}
+int main()
+{
+    cout<<"输入字符串：";
+    cin>>s;
+    for(int i=0;i<26;i++)
+    {
+        count[i]=0;
+    }
+    for(int i=0;i<strlen(s);i++)
+    {r=s[i]-'a';
+    count[r]++;}
+    for(int i=0;i<26;i++)
+    {if (count[i] != 0 ) // 若该字母出现。。。
+{
+letter='a'+i;
+cout<<letter<<" : "<<count[i]<<endl; // 输出字母及出现次数
+h++;
+g[h]=letter;
+}
+    }
+    HuffmanTree ht;
+    HuffmanCode hc;
+    CrtHuffmanTree(ht,h);
+    outputHuffman(ht,m);
+    CrtHuffmanCode(ht,hc,h);
+    outputhuffCode(hc,h);
+    cout<<"请输入哈夫曼编码：";
+    cin>>f;
+    n=strlen(f);
+    cout<<"对应字母为：";
+    for(int t=0;t<n;t++)
+    {
+        e[x]=f[t];
+        x++;
+        for(int i=1;i<=h;i++)
+    {
+        if(!strcmp(e,hc[i]))
+        {cout<<g[i];
+        for(int z=0;z<=x;z++)
+        e[z]='\0';
+        x=0;break;
+        }
+    }
+        if(t==n-1)
+        if(x>0)
+        cout<<"输入的编码有错！！！！";
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
